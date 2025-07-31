@@ -1,25 +1,38 @@
-const targetDate = new Date('August 5 , 2025 22:00:00').getTime();
+   function getNextBirthday(month, day){
+   const now = new Date();
+   let year = now.getFullYear();
+   let nextBirthday = new Date(year, month - 1, day);
 
-function updateTimer() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
+   if (now > nextBirthday){
+    nextBirthday.setFullYear(year + 1);
 
-    if (distance < 0){
-        document.getElementById("timer").innerHTML = "Countdown Finished!";
-        clearInterval(timerInterval);
+   }
+   return nextBirthday;
+
+} 
+ 
+ const birthMonth = 12;
+ const birthDay = 29;
+
+ const birthday = getNextBirthday(birthMonth, birthDay);
+
+   function updateTimer(){
+    const now = new Date();
+    const diff = birthday - now;
+
+    if (diff <= 0){
+        document.getElementById("timer").innerHTML = "🎂 Happy Birthday! 🎉";
         return;
-
     }
 
-    const days = Math.floor(distance / (1000 * 60 *60 *24));
-    const hours = Math.floor((distance % (1000 * 60 *60 *24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 *60)) / 1000);
+    const days = Math.floor(diff / (1000 * 60 *60 *24));
+    const hours = Math.floor((diff / (1000 * 60 *60 ))% 24);
+    const minutes = Math.floor((diff / (1000 * 60 )) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    
+   document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-    document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 }
 
-const timerInterval = setInterval(updateTimer, 1000);
-
+setInterval(updateTimer, 1000);
 updateTimer();
-
